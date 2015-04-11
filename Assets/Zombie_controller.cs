@@ -10,6 +10,7 @@ public class Zombie_controller : MonoBehaviour {
 	Animator anim;
 	Vector3 move_dir;
 	float gravity = 9.81f;
+	float runMultiplier = 1f;
 
 	bool attacking = false;
 
@@ -29,9 +30,17 @@ public class Zombie_controller : MonoBehaviour {
 		RaycastHit hit;
 
 		if (Char_ctrl.isGrounded) {
-			move_dir = Vector3.forward * up_down_ctrl * movement_speed * Time.deltaTime;
+
+			if (Input.GetKey("left shift")) {
+				runMultiplier = 2f;
+			} else {
+				runMultiplier = 1f;
+			}
+
+			move_dir = Vector3.forward * up_down_ctrl * movement_speed * Time.deltaTime * runMultiplier;
 			move_dir = transform.TransformDirection (move_dir);
-			anim.SetFloat("Translation", Mathf.Abs(up_down_ctrl) * movement_speed);
+
+			anim.SetFloat("Translation", Mathf.Abs(up_down_ctrl) * movement_speed * runMultiplier);
 
 			if (Input.GetKey(KeyCode.Return)) {
 //				attacking = true;
@@ -43,7 +52,7 @@ public class Zombie_controller : MonoBehaviour {
 					}
 				}
 			}
-
+			
 			transform.Rotate (0, left_right_ctrl * rotate_speed, 0);
 		}
 
