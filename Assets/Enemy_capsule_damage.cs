@@ -51,14 +51,9 @@ public class Enemy_capsule_damage : MonoBehaviour {
 
 				// Follow part.
 				Vector3 Diff = transform.position - target.position;
-//				if (Diff.magnitude > desiredDistance) {
-					float mult = desiredDistance / Diff.magnitude;
-
-					transform.position -= new Vector3 (Diff.x, 0f, Diff.z);
-
-					transform.position += new Vector3 (Diff.x, 0f, Diff.z) * mult;
-//				}
-
+				float mult = desiredDistance / Diff.magnitude;
+				transform.position -= new Vector3 (Diff.x, 0f, Diff.z);
+				transform.position += new Vector3 (Diff.x, 0f, Diff.z) * mult;
 
 			}
 		}
