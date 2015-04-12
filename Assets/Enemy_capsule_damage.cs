@@ -3,6 +3,12 @@ using System.Collections;
 
 public class Enemy_capsule_damage : MonoBehaviour {
 
+	public float enemyRotationSpeed;
+	public Transform target;
+
+	private Quaternion _lookRotation;
+	private Vector3 _direction;
+	
 	public void damage() {
 		this.gameObject.GetComponent<Renderer> ().material.color = Color.red;
 	}
@@ -16,11 +22,13 @@ public class Enemy_capsule_damage : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 //		this.gameObject.GetComponent<Renderer> ().material.color = Color.red;
+
+		enemyRotationSpeed = 6f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
+		
 		RaycastHit hit;
 		CapsuleCollider cpasCol = GetComponent<CapsuleCollider>();
 //		CharacterController charCtrl = GetComponent<CharacterController>();
@@ -29,6 +37,13 @@ public class Enemy_capsule_damage : MonoBehaviour {
 			float distanceToObstacle = hit.distance;
 			if (hit.collider.tag != "Enemy") {
 				Debug.Log(this.name + " detects: " + hit.collider.tag);
+				target = hit.transform;
+
+				_direction = (target.position - transform.position).normalized;
+				_lookRotation = Quaternion.LookRotation(_direction);
+
+				transform.rotation = Quaternion.Slerp(transform.rotation, _lookRotation, Time.deltaTime * enemyRotationSpeed);
+
 			}
 		}
 	
